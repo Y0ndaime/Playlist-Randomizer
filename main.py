@@ -13,7 +13,6 @@ def create_playlist():
         json.dump(output, outfile)
         global message
     message.set("Playlist {} created".format(output["playlistName"]))
-    print(message.get())
 
 
 def random_scenario_list():
