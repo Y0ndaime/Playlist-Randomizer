@@ -50,7 +50,7 @@ body = Frame(window)
 bottom = Frame(window)
 message = StringVar()
 message_label = Label(bottom, textvariable = message)
-message_label.grid(row=0, column=0, columnspan=2)
+message_label.pack(fill="x")
 playlist_name_var = StringVar()
 playlist_name_entry = Entry(header, textvariable=playlist_name_var)
 playlist_name_entry.grid(row=0, column=1, sticky="e")
@@ -75,7 +75,7 @@ values["entryfields"] = amount_entries_list
 values["playlistName"] = playlist_name_var
 values["repetitions"] = repetitions_entries_list
 randomize_button = Button(bottom, text="Create Playlist", command=create_playlist)
-randomize_button.grid(row=1, column=0, columnspan=2)
+randomize_button.pack(fill="x")
 header.pack(fill="x")
 labels.pack(fill="x")
 body.pack(fill="x")
