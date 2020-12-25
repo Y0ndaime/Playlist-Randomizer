@@ -1,8 +1,15 @@
 import json
 from tkinter import *
+from tkinter import messagebox
 from os import path
 from random import choice
+import sys
 
+
+def handle_error(error, message=""):
+    messagebox.showerror("Error", """
+    Error: {}\n \nFix: {}
+    """.format(error, message))
 
 def create_playlist():
     output = dict()
@@ -10,33 +17,48 @@ def create_playlist():
     output["scenarioList"] = random_scenario_list()
     output["isFavorite"] = False
     with open(path.join(config["playlists_path"], values["playlistName"].get()) + ".json", 'w') as outfile:
-        json.dump(output, outfile)
+        json.dump(output, outfile, indent=4)
         global message
     message.set("Playlist {} created".format(output["playlistName"]))
 
 
 def random_scenario_list():
-    scenarioList = []
+    scenario_list = []
     counter = 0
     amounts = values["entryfields"]
     repetitions = values["repetitions"]
     for playlistname in config["playlist_names"]:
         amount = amounts[counter]
         numbers = repetitions[counter].get().split(";")
+        if len(numbers) == 1:
+            while len(numbers) < int(amount.get()):
+                numbers.append(numbers[-1])
         i = 0
         while i < int(amount.get()):
-            playlist = json.load(open(path.join(config["playlists_path"], playlistname) + ".json", "r"))
+            try:
+                playlist = json.load(open(path.join(config["playlists_path"], playlistname) + ".json", "r"))
+            except FileNotFoundError as errortype:
+                handle_error(errortype, "Make sure all the playlists in the config are speleed correct and exist")
+                sys.exit()
             scen = choice(playlist["scenarioList"])
-            scen["playCount"] = int(numbers[i])
-            scenarioList.append(scen)
+            try:
+                scen["playCount"] = int(numbers[i])
+            except (ValueError, IndexError) as errortype:
+                handle_error(errortype, message="Make sure you follow the correct syntax for the amount of plays")
+                sys.exit()
+            scenario_list.append(scen)
             i += 1
         counter += 1
-    return scenarioList
+    return scenario_list
 
 
-config = json.load(open('config.json', 'r'))
 window = Tk()
 window.title("Playlist Randomizer")
+try:
+    config = json.load(open('config.json', 'r'))
+except json.decoder.JSONDecodeError as error:
+    handle_error(error, "Make sure you use 2 \\ in your path")
+    sys.exit()
 header = Frame(window)
 labels = Frame(window)
 amount_label = Label(labels, text="Scens")
