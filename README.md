@@ -15,14 +15,17 @@ Save the changes and run the program.
 Once you open the program you can see a small GUI open up.   
 
 In it are the names of the playlists you input and a textbox in which you can input the number of scenarios chosen from each playlist.   
+   
+As well as another box in which you can input the amount of plays for each scenarios.
+If you choose x scenarios from one playlist you also need to input either x play amounts seperated by ";", e.g. "2;3;1" for 3 scenarios,   
+or you can just input 1 amount, which will then be used for all scenarios from that playlist.
 
 At the top you can choose the name of the newly created playlist.   
 
 Once you chose the right name and numbers click the "Create Playlist" Button.
 
-To change the amount of plays a scenario has please change it in the original playlist.
-
 ## Troubleshooting
 
+The errors all have a small message in which you can also find a possible fix. Please try these first
 If the program crashes make sure that the "playlists_path" and the "playlist_names" are correct and exist.   
 If this doesn't help dm Yondaime#1370 on the [Voltaic Discord](https://discord.gg/voltaic).
